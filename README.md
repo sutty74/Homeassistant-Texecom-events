@@ -39,7 +39,7 @@ I use node red to help with the integration, there are probably smoother ways to
 
 First we need to add a TCP In Node in Node red, Enter the details of your Texecom Ethernet module, example below.
 
-![node red tcp in](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/74b9a6c0-8f0e-4953-8d0d-f5c2d009d338)
+![node red tcp in](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/440d1e3c-9562-4984-847d-897f234328fd)
 
 I added a debug node to the TCP IN Node and opened and closed a zone, just to prove that the texecom events were being seen by Node RED. Here is the event from my front door open and closing. From the debug message below we can see that events are being seen in NODE RED.
 
