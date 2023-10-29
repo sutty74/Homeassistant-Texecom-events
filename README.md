@@ -43,7 +43,7 @@ First we need to add a TCP In Node in Node red, Enter the details of your Texeco
 
 I added a debug node to the TCP IN Node and opened and closed a zone, just to prove that the texecom events were being seen by Node RED. Here is the event from my front door open and closing. From the debug message below we can see that events are being seen in NODE RED.
 
-![debug event](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/7640c9a1-1609-46ed-90cb-0a6594dcec50)
+![debug event](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/dc4db819-e1ab-4a15-8fd2-88fcb7fa04b5)
 
 The above message tells us the following Z = Zone, 001 is the zone number, the last digit 1 means the zone is open and a 0 means the door is closed. Simple :) 
 
@@ -56,17 +56,18 @@ T= Tag (Fob)
 
 I use a simple switch node to start to split the messages out:
 
-![event filtering](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/28acbf19-5099-4bd0-926d-4f5c30c69f24)
+![event filtering](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/1260112b-79d3-4236-b9fa-d71e0f1fbc0a)
 
 ## Getting the messages ready for use
 
 Starting with zone messages, i needed to adapt the message from the alarm panel slightly, i wanted to remove the preceeding " and the last NEWLINE symbols. A function node containing some code should help.
 
-![parsed messages](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/689fd1e6-b864-4940-b2cb-20989287ede1)
+![parsed messages](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/5a2c7bdf-1063-465f-8949-78478f6f6bfd)
+
 
 I ended up with the following message of which i can use further in my integration.
 
-![parsed message debug](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/847e2e98-e480-467f-be7e-cb3fd080371b)
+![parsed message debug](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/24b2e667-bd1a-4011-b2ae-fb5c09aac231)
 
 I applied the same function node and code for each of the other events being sent from the switch node.
 
@@ -76,17 +77,17 @@ SO next job is to get the message into homeassistant, there maybe a much more ef
 
 I created a switch, each zone on the alarm panel had two items with that switch, Item 1 was the zone going closed, and Item 2 was the zone going open, See example below for zones 1 and 2.
 
-![switch node](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/a24c1434-f14c-47a5-b1e2-9de1284d914c)
+![switch node](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/60da1061-39a5-4d2c-9016-9b076a5f9ec9)
 
 You will need to do this for every zone on the alarm panel you want to monitor.
 
 Next i wanted to change the message to something that MQTT could use, so i opted for a simple message from each zone, which was open and close.
 
-![change node](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/03cbf8cc-2a76-4fd1-a7dd-6556f5318d8a)
+![change node](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/c55d643f-2b8d-4e45-b15c-b6bfd4c0a940)
 
 Now we have changed the name of the message, we can simply put this into a MQTT message and send into home assistant.
 
-![mqtt message](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/72fe578d-2437-4c5f-afd1-fe0cf6e7194a)
+![mqtt message](https://github.com/sutty74/Homeassistant-Texecom-events/assets/53712651/3a6f9fd8-09a1-49cb-9422-20bc98678a4d)
 
 The MQTT OUT Node will need to be created for each zone you want to monitor in home assistant.
 
